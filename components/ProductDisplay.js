@@ -6,6 +6,7 @@ app.component('product-display', {
         <div class="product-image">
             <img :src="image">
         </div>
+
         <div class="product-info">
             <h1>{{title}}</h1>
             <p v-if="inStock > 10">In Stock</p>
@@ -28,9 +29,9 @@ app.component('product-display', {
             </div>
         
             <button 
-            disabled="inStock <= 0" 
+            :disabled="!inStock"
             class="button" 
-            :class="{ disabledButton: inStock <= 0}" 
+            :class="{ disabledButton: !inStock}" 
             @click="addToCart">
             Add to cart
             </button>
@@ -74,11 +75,7 @@ app.component('product-display', {
     },
     methods: {
         addToCart(){
-            this.cart+=1
-        },
-        removeToCart(){
-            if (this.cart <= 0) return
-            this.cart-=1
+            this.$emit('add-to-cart', this.variants[this.selectedVariant].id)
         },
         updateVariant(index){
             this.selectedVariant = index
